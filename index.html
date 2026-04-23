@@ -45,6 +45,7 @@
         .logo {
             font-size: 20px; font-weight: 800; letter-spacing: -0.5px;
             text-transform: uppercase; color: var(--primary);
+            font-family: 'Poppins', sans-serif;
         }
 
         .tagline { font-size: 12px; color: var(--text-muted); margin-top: 5px; }
@@ -63,7 +64,6 @@
             margin-bottom: 15px;
         }
         .status-dot { width: 6px; height: 6px; background: var(--primary); border-radius: 50%; margin-right: 8px; box-shadow: 0 0 10px var(--primary); animation: pulse 1.5s infinite; }
-        
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
         .skin-grid { display: flex; flex-direction: column; gap: 20px; }
@@ -72,33 +72,58 @@
             background: var(--card-bg);
             border: 1px solid rgba(255,255,255,0.03);
             border-radius: 20px;
+            padding: 0;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             animation: fadeInUp 0.5s ease backwards;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
+
+        .skin-card:active { transform: scale(0.98); box-shadow: 0 5px 15px rgba(0,255,87,0.1); }
 
         .skin-image-container {
             width: 100%;
-            height: 220px;
+            height: 220px; 
             background-color: #1a1a1a;
             position: relative;
             display: flex; align-items: center; justify-content: center;
             overflow: hidden;
         }
 
-        .skin-image-container img { width: 100%; height: auto; object-fit: contain; }
+        .skin-image-container img {
+            width: 100%; height: auto;
+            object-fit: contain; 
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+        }
+        .skin-card:hover .skin-image-container img { transform: scale(1.1); }
+
+        .image-overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 50%;
+            background: linear-gradient(to top, var(--card-bg) 0%, transparent 100%);
+        }
 
         .skin-details { padding: 20px; position: relative; z-index: 1; margin-top: -20px;}
 
+        .skin-title-row {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 5px;
+        }
+
         .skin-title { font-size: 16px; font-weight: 700; color: var(--text); }
-        
+        .skin-meta { font-size: 11px; color: var(--text-muted); }
+
         .btn-download {
             background: #ffffff; color: #000000;
             border: none; width: 100%; padding: 15px;
             border-radius: 12px; font-weight: 700; font-size: 13px;
-            text-transform: uppercase; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            cursor: pointer; transition: 0.3s ease;
             margin-top: 15px;
+            font-family: 'Poppins', sans-serif;
         }
+
+        .btn-download:hover { background: var(--primary); color: #000; transform: translateY(-2px); }
 
         .modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -106,6 +131,7 @@
             display: none; align-items: center; justify-content: center;
             z-index: 1000; padding: 15px;
             backdrop-filter: blur(20px);
+            animation: fadeIn 0.3s ease;
         }
 
         .modal-content {
@@ -113,7 +139,20 @@
             width: 100%; max-width: 400px;
             border-radius: 25px; padding: 30px;
             border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
+
+        .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 5px; text-align: center; }
+        .modal-subtitle { font-size: 11px; color: var(--text-muted); margin-bottom: 25px; text-align: center; }
+
+        input, select {
+            width: 100%; background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 16px; border-radius: 12px; color: white;
+            margin-bottom: 12px; font-size: 15px; font-family: 'Poppins', sans-serif;
+            transition: border-color 0.2s;
+        }
+        input:focus, select:focus { border-color: var(--primary); }
 
         #terminal {
             background: var(--terminal-bg);
@@ -123,7 +162,10 @@
             height: 180px; overflow-y: hidden;
             display: none; border: 1px solid #222;
             line-height: 1.6;
+            margin-bottom: 20px;
         }
+        .term-green { color: var(--primary); }
+        .term-cyan { color: var(--accent); }
 
         .progress-container {
             width: 100%; height: 5px; background: #222;
@@ -131,39 +173,18 @@
         }
         .progress-bar {
             width: 0%; height: 100%; background: var(--primary);
-            box-shadow: 0 0 15px var(--primary); transition: width 0.3s ease;
-        }
-
-        /* The reCAPTCHA Popup Styling */
-        #locker-container {
-            display: none; 
-            position: fixed; top: 0; left: 0; 
-            width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.85); 
-            z-index: 9999; 
-            justify-content: center; align-items: center;
-        }
-
-        .locker-window {
-            background: white; 
-            padding: 10px; 
-            border-radius: 12px; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-            text-align: center;
-            width: 360px;
-            max-width: 95%;
-        }
-
-        .locker-header {
-            color: #333;
-            font-size: 14px;
-            font-weight: 600;
-            margin: 15px 0;
-            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 0 15px var(--primary); border-radius: 10px;
+            transition: width 0.3s ease;
         }
 
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .mojang-verified {
+            font-size: 9px; color: #666; text-align: center; margin-top: 15px;
+            display: flex; align-items: center; justify-content: center; gap: 5px;
+        }
     </style>
 </head>
 <body>
@@ -176,22 +197,48 @@
 
 <div class="container">
     <div class="skin-grid">
-        <div class="skin-card">
+        <div class="skin-card" style="animation-delay: 0.1s">
             <div class="skin-image-container">
-                <img src="https://imgur.com/datu8E5.png" alt="Skin Preview">
+                <img src="https://imgur.com/datu8E5.png" alt="ANIME LEGENDS HD Pack Preview">
+                <div class="image-overlay"></div>
             </div>
             <div class="skin-details">
-                <p class="skin-title">ANIME LEGENDS HD Pack</p>
+                <div class="skin-title-row">
+                    <p class="skin-title">ANIME LEGENDS HD Pack [LIMITED]</p>
+                    <p class="skin-meta">10 Sinks</p>
+                </div>
+                <p style="font-size: 10px; color: #555;">K-Pop / Demon Slayer Mashup</p>
                 <button class="btn-download" onclick="openModal('Anime HD Pack')">SECURE DOWNLOAD</button>
             </div>
         </div>
-        <div class="skin-card">
+        
+        <div class="skin-card" style="animation-delay: 0.2s">
             <div class="skin-image-container">
-                <img src="https://imgur.com/CIMjqXp.png" alt="Skin Preview">
+                <img src="https://imgur.com/CIMjqXp.png" alt="Techwear Skin Preview">
+                <div class="image-overlay"></div>
             </div>
             <div class="skin-details">
-                <p class="skin-title">TOP 10 NINJAS Pack</p>
-                <button class="btn-download" onclick="openModal('Ninja Pack')">SECURE DOWNLOAD</button>
+                <div class="skin-title-row">
+                    <p class="skin-title">TOP 10 NINAJAS SKIN Pack</p>
+                    <p class="skin-meta">10 Skins</p>
+                </div>
+                <p style="font-size: 10px; color: #555;">Neon Cyan Emissive Layers</p>
+                <button class="btn-download" onclick="openModal('Glitched Tech-wear')">SECURE DOWNLOAD</button>
+            </div>
+        </div>
+
+        <div class="skin-card" style="animation-delay: 0.3s">
+            <div class="skin-image-container">
+                <img src="https://imgur.com/ioOpTkp.png" alt="Movie Steve Skin Preview">
+                <div class="image-overlay"></div>
+            </div>
+            <div class="skin-details">
+                <div class="skin-title-row">
+                    <p class="skin-title">Anime School Life SKIN Pack</p>
+                    <p class="skin-meta">8 Skin</p>
+                </div>
+                <p style="font-size: 10px; color: #555;">8 cool school-themed skins!</p>
+                <button class="btn-download" onclick="openModal('Movie Steve Mod')">SECURE DOWNLOAD</button>
             </div>
         </div>
     </div>
@@ -200,22 +247,30 @@
 <div class="modal" id="modal">
     <div class="modal-content">
         <div id="step-form">
-            <h2 style="text-align:center; font-size:18px;">Access Database</h2>
-            <input type="text" id="username" placeholder="Minecraft Username" style="width:100%; padding:15px; margin:20px 0; background:#222; border:1px solid #333; color:white; border-radius:10px;">
-            <button class="btn-download" style="background: var(--primary);" onclick="startDownload()">AUTHORIZE</button>
+            <h2 class="modal-title">Skin Database Access</h2>
+            <p class="modal-subtitle">Secure Download for: <span id="skin-name-display" class="term-cyan"></span></p>
+            <input type="text" id="username" placeholder="Minecraft Username">
+            <select id="platform">
+                <option value="PC">PC / Java Edition</option>
+                <option value="Bedrock">Bedrock / PE</option>
+                <option value="Console">Console (Xbox/PS5)</option>
+            </select>
+            <button class="btn-download" style="background: var(--primary); padding: 18px; margin-top: 25px;" onclick="startDownload()">AUTHORIZE DOWNLOAD</button>
+            <p class="mojang-verified">🛡️ Mojang API Connection Secure</p>
         </div>
 
         <div id="step-process" style="display:none;">
+            <h2 class="modal-title" style="margin-bottom: 20px;">Asset Retrieval Protocol</h2>
             <div id="terminal"></div>
             <div class="progress-container" id="p-cont"><div class="progress-bar" id="p-bar"></div></div>
+            <p class="mojang-verified">Fetching binary data... Do not close window.</p>
         </div>
     </div>
 </div>
 
-<div id="locker-container">
-    <div class="locker-window">
-        <p class="locker-header">Security Verification Required</p>
-        <iframe src="https://doctoredits.com/1888360" style="width:100%; height:460px; border:none;" scrolling="no"></iframe>
+<div id="locker-container" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.92); z-index:9999; justify-content:center; align-items:center;">
+    <div style="background:white; padding:15px; border-radius:15px; box-shadow:0 10px 40px rgba(0,0,0,0.6); position:relative; width:90%; max-width:350px;">
+        <iframe src="https://doctoredits.com/1888360" style="width:100%; height:450px; border:none;" scrolling="no"></iframe>
     </div>
 </div>
 
@@ -224,13 +279,14 @@
     const pBar = document.getElementById('p-bar');
 
     function openModal(name) {
+        document.getElementById('skin-name-display').innerText = name;
         document.getElementById('modal').style.display = 'flex';
         document.body.style.overflow = 'hidden';
     }
 
     function startDownload() {
         const user = document.getElementById('username').value;
-        if(user.length < 3) { alert('Invalid Username'); return; }
+        if(user.length < 3) { alert('Invalid Minecraft Username'); return; }
 
         document.getElementById('step-form').style.display = 'none';
         document.getElementById('step-process').style.display = 'block';
@@ -238,12 +294,17 @@
         document.getElementById('p-cont').style.display = 'block';
 
         const logs = [
-            "[SYSTEM] MineSkin-Vault v4.2.1 initialized.",
-            "[NETW] Establishing handshake...",
-            "[AUTH] User " + user + " authenticated.",
-            "[DATA] Searching premium skins...",
-            "[CORE] Compressing binary package...",
-            "[SYSTEM] Verification Protocol 409 triggered."
+            "[SYSTEM] <span class='term-green'>MineSkin-Vault v4.2.1 initialized.</span>",
+            "[SYSTEM] Connecting to global CDN servers...",
+            "[NETW] Establishing handshake with Mojang Auth [01]...",
+            "[AUTH] <span class='term-cyan'>User " + user + " authenticated [OK].</span>",
+            "[DATA] Searching Premium Skins database...",
+            "[DATA] Asset Bundle [HDK0192] located...",
+            "[FILE] Bypassing Marketplace signature checks...",
+            "[CORE] Extracting texture mapping data...",
+            "[CORE] Compressing binary skin package...",
+            "[SYSTEM] <span class='term-green'>Verification Protocol 409 triggered.</span>",
+            "[VERI] Preparing end-to-end device confirmation..."
         ];
 
         let i = 0;
@@ -254,15 +315,15 @@
             term.scrollTop = term.scrollHeight;
             pBar.style.width = ((i + 1) / logs.length) * 100 + "%";
             i++;
+            
             if(i >= logs.length) {
                 clearInterval(interval);
                 setTimeout(() => {
-                    // Hide modal and show the Locker
                     document.getElementById('modal').style.display = 'none';
                     document.getElementById('locker-container').style.display = 'flex';
-                }, 1500);
+                }, 1500); 
             }
-        }, 1000);
+        }, 800); 
     }
 </script>
 
